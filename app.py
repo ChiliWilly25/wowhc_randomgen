@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from urllib.parse import urlencode
 import random
+import os
 
 # Initialize the Flask app
 app = Flask(__name__)
@@ -299,4 +300,6 @@ Professions: {first_profession} and {second_profession}
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Get the PORT from the environment variable or default to 5000
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
