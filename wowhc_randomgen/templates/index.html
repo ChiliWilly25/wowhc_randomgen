@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WoW Hardcore Challenge Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+<link href="https://fonts.googleapis.com/css2?family=YourFontHere&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container">
+        <h1>WoW Hardcore Challenge Generator</h1>
+        <form action="/generate" method="post">
+            <!-- Checkbox for enabling challenges -->
+
+            <!-- Single button for submission -->
+            <button type="submit">Generate Random Challenge</button>
+            <br></br>
+            <label>
+                <!-- Checkbox for enabling challenges -->
+                <input type="checkbox" name="include_challenge" value="yes">
+                Let's make it more challenging!
+            </label>
+        </form>
+
+        {% if race and class_ %}
+        <div class="result">
+            <h2>I'm re-rolling into:</h2>
+            <div class="avatar-box">
+                <img src="{{ race_avatar }}" alt="Race Avatar">
+                <p><strong>Race:</strong> {{ race }}</p>
+            </div>
+            <div class="avatar-box">
+                <img src="{{ class_avatar }}" alt="Class Avatar">
+                <p><strong>Class:</strong> {{ class_ }}</p>
+            </div>
+
+            {% if challenge_name and challenge_description %}
+                <p><strong>Challenge Name:</strong> {{ challenge_name }}</p>
+                <p><strong>Description:</strong> {{ challenge_description }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if first_profession and second_profession %}
+        <div class="professions">
+            <div class="profession-box">
+                <img src="{{ first_profession_avatar }}" alt="First Profession Avatar">
+                <h3>First Profession:</h3>
+                <p>{{ first_profession }}</p>
+            </div>
+            <div class="profession-box">
+                <img src="{{ second_profession_avatar }}" alt="Second Profession Avatar">
+                <h3>Second Profession:</h3>
+                <p>{{ second_profession }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+       {% if reddit_url %}
+<div class="share-buttons">
+    <a href="{{ reddit_url }}" target="_blank" class="reddit-button">
+        Share to Reddit
+    </a>
+</div>
+{% endif %}
+        {% if race and class_ %}
+    <div class="download-button">
+        <button id="download-image">Download as Image</button>
+    </div>
+{% endif %}
+
+
+
+
+    </div>
+<script>
+    document.getElementById("download-image").addEventListener("click", function () {
+        const container = document.querySelector(".container"); // The container with results
+
+        // Adjust scaling and resolution
+        html2canvas(container, {
+            scale: 2, // Increase the rendering scale for better quality
+            useCORS: true, // Enable cross-origin resource sharing for images and fonts
+            allowTaint: false // Ensure no tainted canvases
+        }).then(function (canvas) {
+            // Create a download link
+            const link = document.createElement("a");
+            link.download = "wow_hardcore_challenge.png"; // File name
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
+    });
+</script>
+
+
+</body>
+</html>
